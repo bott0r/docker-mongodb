@@ -43,4 +43,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 27017
 
-CMD ["mongod"]
+CMD ["mongod", "--config", "/etc/mongod.conf"]
