@@ -30,7 +30,7 @@ RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" > 
 
 RUN set -x \
     && apt-get update \
-    && apt-get install -y mongodb-org \
+    && apt-get install --force-yes -y mongodb-org \
     && rm -rf /var/lib/apt/lists/*
 
 RUN chown -R ${RUN_USER}:${RUN_GROUP} /var/lib/mongodb
