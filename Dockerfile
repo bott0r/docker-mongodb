@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 
 ENV RUN_USER            mongodb
 ENV RUN_USER_UID        3027
@@ -23,20 +23,22 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
     && rm /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" > /etc/apt/sources.list.d/mongodb-org-3.2.list
 
 RUN set -x \
     && apt-get update \
-    && apt-get install --force-yes -y mongodb-org \
+    && apt-get install -y --force-yes mongodb-org \
     && rm -rf /var/lib/apt/lists/*
 
-RUN chown -R ${RUN_USER}:${RUN_GROUP} /var/lib/mongodb
+RUN chown -R ${RUN_USER}:${RUN_GROUP} /var/lib/mongodb /var/log/mongodb
 
 VOLUME /var/lib/mongodb
 
 COPY docker-entrypoint.sh /entrypoint.sh
+
+RUN chmod a+x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
